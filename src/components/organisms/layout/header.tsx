@@ -1,13 +1,32 @@
 import { memo, useCallback, VFC } from "react";
-import { Flex, Heading } from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
+import { 
+	Flex, 
+	Heading, 
+	Box, 
+	Link, 
+	IconButton, 
+	Button, 
+	useDisclosure,
+	Drawer, 
+	DrawerOverlay, 
+	DrawerContent, 
+	DrawerBody 
+} from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
 
 export const Header: VFC = memo(() => {
 	const history = useHistory();
 	const onClickHome = useCallback(()=> history.push("/home"),[]);
+	const onClickSalesToday = useCallback(()=>history.push("/home/"),[]);
+	const onClickSalesUpdate = useCallback(()=>history.push("/home/update"),[]);
+	const onClickSetting = useCallback(()=>history.push("/home/setting"),[]);
+
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return(
+		<>
 		<Flex
 			as="nav"
 			bg="cyan.500"
@@ -23,10 +42,47 @@ export const Header: VFC = memo(() => {
 				_hover={{cursor: "pointer"}}
 				onClick={onClickHome}
 			>
-			<Heading as="h1" fontSize={{base: "md", md: "lg"}}>
-				OSAKANA-NET/SALES
-			</Heading>
+				<Heading as="h1" fontSize={{base: "md", md: "lg"}}>
+					OSAKANA-NET/SALES
+				</Heading>
+			</Flex>
+			<Flex
+				align="center"
+				fontSize="sm"
+				display={{ base: "none", md: "flex" }}
+				flexGrow={2}
+			>
+				<Box pr={4}>
+ 					<Link onClick={onClickSalesToday}>当日売上</Link>
+				</Box>
+				<Box pr={4}>
+					<Link onClick={onClickSalesUpdate}>売上修正</Link>
+				</Box>
+				<Box>
+					<Link onClick={onClickSetting}>設定</Link>
+				</Box>
+			</Flex>
+			<IconButton 
+				aria-label = "メニュー" 
+				icon={<HamburgerIcon />} 
+				size="sm" 
+				variant="unstyled" 
+				display={ {base: "block", md:"none"} }
+				onClick={onOpen}
+			/>
 		</Flex>
-		</Flex>
+		<Drawer placement="left" size="xs" onClose={onClose} isOpen={isOpen}>
+			<DrawerOverlay>
+				<DrawerContent>
+					<DrawerBody p={0} bg="gray.100">
+						<Button onClick={ onClickSalesToday } w="100%">当日売上</Button>
+						<Button onClick={ onClickSalesUpdate
+						} w="100%">売上修正</Button>
+						<Button onClick={ onClickSetting } w="100%">設定</Button>
+					</DrawerBody>
+				</DrawerContent>
+			</DrawerOverlay>
+		</Drawer>
+		</>
 	);
 });
