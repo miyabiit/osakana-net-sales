@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
+import { MenuIconButton } from "../../atoms/button/MenuIconButton";
 
 export const Header: VFC = memo(() => {
 	const history = useHistory();
@@ -62,14 +63,7 @@ export const Header: VFC = memo(() => {
 					<Link onClick={onClickSetting}>設定</Link>
 				</Box>
 			</Flex>
-			<IconButton 
-				aria-label = "メニュー" 
-				icon={<HamburgerIcon />} 
-				size="sm" 
-				variant="unstyled" 
-				display={ {base: "block", md:"none"} }
-				onClick={onOpen}
-			/>
+			<MenuIconButton onOpen={onOpen} />
 		</Flex>
 		<Drawer placement="left" size="xs" onClose={onClose} isOpen={isOpen}>
 			<DrawerOverlay>
